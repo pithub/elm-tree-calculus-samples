@@ -1,4 +1,4 @@
-module Tree.Tree exposing (Node(..), Tree(..), delta, var)
+module Tree.Tree exposing (Node(..), Tree(..), add, delta, var)
 
 -- 3.2 Natural Trees
 
@@ -20,3 +20,8 @@ delta children =
 var : String -> List Tree -> Tree
 var label children =
     Tree (Var label) children
+
+
+add : List Tree -> Tree -> Tree
+add new (Tree node children) =
+    Tree node (List.append children new)
