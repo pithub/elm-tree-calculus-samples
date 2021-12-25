@@ -43,3 +43,42 @@ fD x =
 cS : T.Tree
 cS =
     fD (cK |> T.add [ cD ]) |> T.add [ fD cK |> T.add [ cK |> T.add [ cD ] ] ]
+
+
+
+-- 3.5 Propositional Logic
+
+
+cTrue : T.Tree
+cTrue =
+    cK
+
+
+cFalse : T.Tree
+cFalse =
+    cK |> T.add [ cI ]
+
+
+cAnd : T.Tree
+cAnd =
+    fD (cK |> T.add [ cK |> T.add [ cI ] ])
+
+
+cOr : T.Tree
+cOr =
+    fD (cK |> T.add [ cK ]) |> T.add [ cI ]
+
+
+cImplies : T.Tree
+cImplies =
+    fD (cK |> T.add [ cK ])
+
+
+cNot : T.Tree
+cNot =
+    fD (cK |> T.add [ cK ]) |> T.add [ fD (cK |> T.add [ cK |> T.add [ cI ] ]) |> T.add [ cI ] ]
+
+
+cIff : T.Tree
+cIff =
+    T.delta [ T.delta [ cI, cNot ], T.delta [] ]

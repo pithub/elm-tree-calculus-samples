@@ -38,6 +38,25 @@ samples =
         , ( "Sxyz", V.cS |> T.add [ T.var "x" [], T.var "y" [], T.var "z" [] ] )
         ]
       )
+    , ( "3.5 Propositional Logic"
+      , [ ( "and", V.cAnd )
+        , ( "and true x", V.cAnd |> T.add [ V.cTrue, T.var "x" [] ] )
+        , ( "and false x", V.cAnd |> T.add [ V.cFalse, T.var "x" [] ] )
+        , ( "or", V.cOr )
+        , ( "or true x", V.cOr |> T.add [ V.cTrue, T.var "x" [] ] )
+        , ( "or false x", V.cOr |> T.add [ V.cFalse, T.var "x" [] ] )
+        , ( "implies", V.cImplies )
+        , ( "implies true x", V.cImplies |> T.add [ V.cTrue, T.var "x" [] ] )
+        , ( "implies false x", V.cImplies |> T.add [ V.cFalse, T.var "x" [] ] )
+        , ( "not", V.cNot )
+        , ( "not true", V.cNot |> T.add [ V.cTrue ] )
+        , ( "not false", V.cNot |> T.add [ V.cFalse ] )
+        , ( "iff", V.cIff )
+        , ( "iff true x", V.cIff |> T.add [ V.cTrue, T.var "x" [] ] )
+        , ( "iff false true", V.cIff |> T.add [ V.cFalse, V.cTrue ] )
+        , ( "iff false false", V.cIff |> T.add [ V.cFalse, V.cFalse ] )
+        ]
+      )
     ]
 
 
