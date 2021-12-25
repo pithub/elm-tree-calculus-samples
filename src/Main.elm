@@ -91,6 +91,13 @@ samples =
         , ( "isFork ΔΔΔ", V.cIsFork [ T.delta [ T.delta [], T.delta [] ] ] )
         ]
       )
+    , ( "4.2 Variable Binding"
+      , [ ( "[x]Kxx", T.bind "x" (V.cK [ T.var "x" [], T.var "x" [] ]) [] )
+        , ( "([x]Kxx)u", T.bind "x" (V.cK [ T.var "x" [], T.var "x" [] ]) [ T.var "u" [] ] )
+        , ( "[x]I", T.bind "x" (V.cI []) [] )
+        , ( "([x]I)u", T.bind "x" (V.cI []) [ T.var "u" [] ] )
+        ]
+      )
     ]
 
 

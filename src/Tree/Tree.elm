@@ -1,4 +1,4 @@
-module Tree.Tree exposing (Node(..), Tree(..), add, delta, eval, evalRule, evalStep, evalSteps, var)
+module Tree.Tree exposing (Node(..), Tree(..), add, bind, delta, eval, evalRule, evalStep, evalSteps, evaled, var)
 
 import Tree.Util as Util
 
@@ -84,3 +84,31 @@ eval tree =
 
         _ ->
             Nothing
+
+
+evaled : Tree -> Tree
+evaled tree =
+    eval tree |> Maybe.withDefault tree
+
+
+
+-- 4.2 Variable Binding
+
+
+bind : String -> Tree -> List Tree -> Tree
+bind label ((Tree tNode tChildren) as tree) children =
+    case List.reverse tChildren of
+        head :: tail ->
+            delta (delta [ bind label head [] ] :: bind label (Tree tNode (List.reverse tail)) [] :: children)
+
+        [] ->
+            case tNode of
+                Delta ->
+                    delta (delta [] :: tree :: children)
+
+                Var tLabel ->
+                    if tLabel == label then
+                        delta (delta [ delta [] ] :: delta [ delta [] ] :: children)
+
+                    else
+                        delta (delta [] :: tree :: children)
