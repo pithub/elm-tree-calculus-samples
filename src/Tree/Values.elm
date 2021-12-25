@@ -7,97 +7,97 @@ import Tree.Tree as T
 -- 3.2 Natural Trees
 
 
-fPower : T.Tree -> Int -> T.Tree -> T.Tree
-fPower zero count tree =
+fPower : T.Tree -> Int -> T.Tree -> List T.Tree -> T.Tree
+fPower zero count tree children =
     if count > 0 then
-        fPower (T.add [ zero ] tree) (count - 1) tree
+        fPower (T.add [ zero ] tree) (count - 1) tree children
 
     else
-        zero
+        zero |> T.add children
 
 
 
 -- 3.3 Tree Calculus
 
 
-cK : T.Tree
-cK =
-    T.delta [ T.delta [] ]
+cK : List T.Tree -> T.Tree
+cK children =
+    T.delta (T.delta [] :: children)
 
 
-cI : T.Tree
-cI =
-    T.delta [ T.delta [ T.delta [] ], T.delta [ T.delta [] ] ]
+cI : List T.Tree -> T.Tree
+cI children =
+    T.delta (T.delta [ T.delta [] ] :: T.delta [ T.delta [] ] :: children)
 
 
-cD : T.Tree
-cD =
-    T.delta [ T.delta [ T.delta [] ], T.delta [ T.delta [], T.delta [] ] ]
+cD : List T.Tree -> T.Tree
+cD children =
+    T.delta (T.delta [ T.delta [] ] :: T.delta [ T.delta [], T.delta [] ] :: children)
 
 
-fD : T.Tree -> T.Tree
-fD x =
-    T.delta [ T.delta [ x ] ]
+fD : T.Tree -> List T.Tree -> T.Tree
+fD x children =
+    T.delta (T.delta [ x ] :: children)
 
 
-cS : T.Tree
-cS =
-    fD (cK |> T.add [ cD ]) |> T.add [ fD cK |> T.add [ cK |> T.add [ cD ] ] ]
+cS : List T.Tree -> T.Tree
+cS children =
+    fD (cK [ cD [] ]) (fD (cK []) [ cK [ cD [] ] ] :: children)
 
 
 
 -- 3.5 Propositional Logic
 
 
-cTrue : T.Tree
-cTrue =
-    cK
+cTrue : List T.Tree -> T.Tree
+cTrue children =
+    cK children
 
 
-cFalse : T.Tree
-cFalse =
-    cK |> T.add [ cI ]
+cFalse : List T.Tree -> T.Tree
+cFalse children =
+    cK (cI [] :: children)
 
 
-cAnd : T.Tree
-cAnd =
-    fD (cK |> T.add [ cK |> T.add [ cI ] ])
+cAnd : List T.Tree -> T.Tree
+cAnd children =
+    fD (cK [ cK [ cI [] ] ]) children
 
 
-cOr : T.Tree
-cOr =
-    fD (cK |> T.add [ cK ]) |> T.add [ cI ]
+cOr : List T.Tree -> T.Tree
+cOr children =
+    fD (cK [ cK [] ]) (cI [] :: children)
 
 
-cImplies : T.Tree
-cImplies =
-    fD (cK |> T.add [ cK ])
+cImplies : List T.Tree -> T.Tree
+cImplies children =
+    fD (cK [ cK [] ]) children
 
 
-cNot : T.Tree
-cNot =
-    fD (cK |> T.add [ cK ]) |> T.add [ fD (cK |> T.add [ cK |> T.add [ cI ] ]) |> T.add [ cI ] ]
+cNot : List T.Tree -> T.Tree
+cNot children =
+    fD (cK [ cK [] ]) (fD (cK [ cK [ cI [] ] ]) [ cI [] ] :: children)
 
 
-cIff : T.Tree
-cIff =
-    T.delta [ T.delta [ cI, cNot ], T.delta [] ]
+cIff : List T.Tree -> T.Tree
+cIff children =
+    T.delta (T.delta [ cI [], cNot [] ] :: T.delta [] :: children)
 
 
 
 -- 3.6 Pairs
 
 
-cPair : T.Tree
-cPair =
-    T.delta []
+cPair : List T.Tree -> T.Tree
+cPair children =
+    T.delta children
 
 
-fFirst : T.Tree -> T.Tree
-fFirst pair =
-    T.delta [ pair, T.delta [], cK ]
+fFirst : T.Tree -> List T.Tree -> T.Tree
+fFirst pair children =
+    T.delta (pair :: T.delta [] :: cK [] :: children)
 
 
-fSecond : T.Tree -> T.Tree
-fSecond pair =
-    T.delta [ pair, T.delta [], cK |> T.add [ cI ] ]
+fSecond : T.Tree -> List T.Tree -> T.Tree
+fSecond pair children =
+    T.delta (pair :: T.delta [] :: cK [ cI [] ] :: children)

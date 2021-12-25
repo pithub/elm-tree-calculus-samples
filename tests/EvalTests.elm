@@ -42,16 +42,16 @@ suite =
                 (T.delta [ T.delta [ T.var "w" [], T.var "x" [] ], T.var "y" [], T.var "z" [], T.var "a" [], T.var "b" [] ])
             , test "Kyz.1"
                 (Just (T.var "y" []))
-                (V.cK |> T.add [ T.var "y" [], T.var "z" [] ])
+                (V.cK [ T.var "y" [], T.var "z" [] ])
             , test "Ix.1"
                 (Just (T.delta [ T.delta [], T.var "x" [], T.delta [ T.var "x" [] ] ]))
-                (V.cI |> T.add [ T.var "x" [] ])
+                (V.cI [ T.var "x" [] ])
             , test "Ix.2"
                 (Just (T.var "x" []))
                 (T.delta [ T.delta [], T.var "x" [], T.delta [ T.var "x" [] ] ])
             , test "Dxyz.1"
                 (Just (T.delta [ T.delta [], T.delta [], T.var "x" [], T.delta [ T.var "x" [] ], T.var "y" [], T.var "z" [] ]))
-                (V.cD |> T.add [ T.var "x" [], T.var "y" [], T.var "z" [] ])
+                (V.cD [ T.var "x" [], T.var "y" [], T.var "z" [] ])
             , test "Dxyz.2"
                 (Just (T.delta [ T.delta [ T.var "x" [] ], T.var "y" [], T.var "z" [] ]))
                 (T.delta [ T.delta [], T.delta [], T.var "x" [], T.delta [ T.var "x" [] ], T.var "y" [], T.var "z" [] ])
@@ -117,12 +117,12 @@ suite =
                 (T.delta [ T.delta [ T.delta [ T.delta [], T.var "y" [] ] ], T.var "a" [], T.var "b" [] ])
             , test "Kyz"
                 (Just (T.var "y" []))
-                (V.cK |> T.add [ T.var "y" [], T.var "z" [] ])
+                (V.cK [ T.var "y" [], T.var "z" [] ])
             , test "Ix"
                 (Just (T.var "x" []))
-                (V.cI |> T.add [ T.var "x" [] ])
+                (V.cI [ T.var "x" [] ])
             , test "Dxyz"
                 (Just (T.var "y" [ T.var "z" [], T.var "x" [ T.var "z" [] ] ]))
-                (V.cD |> T.add [ T.var "x" [], T.var "y" [], T.var "z" [] ])
+                (V.cD [ T.var "x" [], T.var "y" [], T.var "z" [] ])
             ]
         ]
