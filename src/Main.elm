@@ -75,6 +75,22 @@ samples =
         , ( "predecessor (successor n)", V.cPredecessor [ V.cSuccessor [ T.var "n" [] ] ] )
         ]
       )
+    , ( "3.8 Fundamental Queries"
+      , [ ( "query is0 is1 is2", V.fQuery (T.var "is0" []) (T.var "is1" []) (T.var "is2" []) [] )
+        , ( "isLeaf", V.cIsLeaf [] )
+        , ( "isLeaf Δ", V.cIsLeaf [ T.delta [] ] )
+        , ( "isLeaf ΔΔ", V.cIsLeaf [ T.delta [ T.delta [] ] ] )
+        , ( "isLeaf ΔΔΔ", V.cIsLeaf [ T.delta [ T.delta [], T.delta [] ] ] )
+        , ( "isStem", V.cIsStem [] )
+        , ( "isStem Δ", V.cIsStem [ T.delta [] ] )
+        , ( "isStem ΔΔ", V.cIsStem [ T.delta [ T.delta [] ] ] )
+        , ( "isStem ΔΔΔ", V.cIsStem [ T.delta [ T.delta [], T.delta [] ] ] )
+        , ( "isFork", V.cIsFork [] )
+        , ( "isFork Δ", V.cIsFork [ T.delta [] ] )
+        , ( "isFork ΔΔ", V.cIsFork [ T.delta [ T.delta [] ] ] )
+        , ( "isFork ΔΔΔ", V.cIsFork [ T.delta [ T.delta [], T.delta [] ] ] )
+        ]
+      )
     ]
 
 

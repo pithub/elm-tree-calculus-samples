@@ -130,3 +130,35 @@ cIsZero children =
 cPredecessor : List T.Tree -> T.Tree
 cPredecessor children =
     fD (fPower (cI []) 2 (cK []) []) (fD (cK [ T.delta [] ]) [ T.delta [] ] :: children)
+
+
+
+-- 3.8 Fundamental Queries
+
+
+fQuery : T.Tree -> T.Tree -> T.Tree -> List T.Tree -> T.Tree
+fQuery is0 is1 is2 children =
+    fD (cK [ is1 ])
+        (fD (fPower (cI []) 2 (cK []) [])
+            [ fD (fPower is2 5 (cK []) [])
+                [ fD (fPower is0 3 (cK []) [])
+                    [ T.delta [] ]
+                ]
+            ]
+            :: children
+        )
+
+
+cIsLeaf : List T.Tree -> T.Tree
+cIsLeaf children =
+    fQuery (cTrue []) (cFalse []) (cFalse []) children
+
+
+cIsStem : List T.Tree -> T.Tree
+cIsStem children =
+    fQuery (cFalse []) (cTrue []) (cFalse []) children
+
+
+cIsFork : List T.Tree -> T.Tree
+cIsFork children =
+    fQuery (cFalse []) (cFalse []) (cTrue []) children
