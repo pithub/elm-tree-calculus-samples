@@ -82,3 +82,22 @@ cNot =
 cIff : T.Tree
 cIff =
     T.delta [ T.delta [ cI, cNot ], T.delta [] ]
+
+
+
+-- 3.6 Pairs
+
+
+cPair : T.Tree
+cPair =
+    T.delta []
+
+
+fFirst : T.Tree -> T.Tree
+fFirst pair =
+    T.delta [ pair, T.delta [], cK ]
+
+
+fSecond : T.Tree -> T.Tree
+fSecond pair =
+    T.delta [ pair, T.delta [], cK |> T.add [ cI ] ]

@@ -57,6 +57,12 @@ samples =
         , ( "iff false false", V.cIff |> T.add [ V.cFalse, V.cFalse ] )
         ]
       )
+    , ( "3.6 Pairs"
+      , [ ( "pair x y", V.cPair |> T.add [ T.var "x" [], T.var "y" [] ] )
+        , ( "first{pair x y}", V.fFirst (V.cPair |> T.add [ T.var "x" [], T.var "y" [] ]) )
+        , ( "second{pair x y}", V.fSecond (V.cPair |> T.add [ T.var "x" [], T.var "y" [] ]) )
+        ]
+      )
     ]
 
 
