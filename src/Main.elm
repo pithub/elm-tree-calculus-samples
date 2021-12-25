@@ -23,6 +23,21 @@ samples =
         , ( "x⁵Δ", V.fPower (T.delta []) 5 (T.var "x" []) )
         ]
       )
+    , ( "3.3 Tree Calculus"
+      , [ ( "ΔΔyz", T.delta [ T.delta [], T.var "y" [], T.var "z" [] ] )
+        , ( "Δ(Δx)yz", T.delta [ T.delta [ T.var "x" [] ], T.var "y" [], T.var "z" [] ] )
+        , ( "Δ(Δwx)yz", T.delta [ T.delta [ T.var "w" [], T.var "x" [] ], T.var "y" [], T.var "z" [] ] )
+        , ( "K", V.cK )
+        , ( "Kyz", V.cK |> T.add [ T.var "y" [], T.var "z" [] ] )
+        , ( "I", V.cI )
+        , ( "Ix", V.cI |> T.add [ T.var "x" [] ] )
+        , ( "D", V.cD )
+        , ( "Dxyz", V.cD |> T.add [ T.var "x" [], T.var "y" [], T.var "z" [] ] )
+        , ( "d{x}", V.fD (T.var "x" []) )
+        , ( "S", V.cS )
+        , ( "Sxyz", V.cS |> T.add [ T.var "x" [], T.var "y" [], T.var "z" [] ] )
+        ]
+      )
     ]
 
 
