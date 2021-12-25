@@ -94,9 +94,14 @@ viewNavSample sample =
 viewSelectedSample : Sample -> H.Html Sample
 viewSelectedSample ( name, tree ) =
     column [ HA.style "flex" "1" ]
-        [ H.h3 [] [ H.text name ]
-        , H.pre [] (TF.toStrings tree |> List.map (\line -> H.div [] [ H.text line ]))
-        ]
+        (H.h3 [] [ H.text name ]
+            :: (T.evalSteps tree
+                    |> List.map
+                        (\step ->
+                            H.pre [] (TF.toStrings step |> List.map (\line -> H.div [] [ H.text line ]))
+                        )
+               )
+        )
 
 
 column : List (H.Attribute m) -> List (H.Html m) -> H.Html m
