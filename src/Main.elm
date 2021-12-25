@@ -64,7 +64,7 @@ samples =
 -- PROGRAM
 
 
-main : Program () Sample Sample
+main : Program () Model Msg
 main =
     Browser.sandbox
         { init = init
@@ -73,17 +73,30 @@ main =
         }
 
 
+type alias Model =
+    { sample : Sample
+    , expanded : Bool
+    }
+
+
+type Msg
+    = SetSample Sample
+    | ToggleExpanded
+
+
 type alias Sample =
     ( String, T.Tree )
 
 
-init : Sample
+init : Model
 init =
-    ( "Initial Sample", T.delta [] )
+    { sample = ( "Initial Sample", T.delta [] )
+    , expanded = False
+    }
 
 
-view : Sample -> H.Html Sample
-view sample =
+view : Model -> H.Html Msg
+view model =
     H.div
         [ HA.style "display" "flex"
         , HA.style "gap" "20px"
@@ -92,11 +105,11 @@ view sample =
         , HA.style "font-family" "monospace"
         ]
         [ viewAllSamples
-        , viewSelectedSample sample
+        , viewSelectedSample model
         ]
 
 
-viewAllSamples : H.Html Sample
+viewAllSamples : H.Html Msg
 viewAllSamples =
     column []
         (List.concatMap
@@ -105,22 +118,44 @@ viewAllSamples =
         )
 
 
-viewNavSample : Sample -> H.Html Sample
+viewNavSample : Sample -> H.Html Msg
 viewNavSample sample =
-    H.div [ HE.onClick sample ] [ H.text (Tuple.first sample) ]
+    H.div [ HE.onClick (SetSample sample) ] [ H.text (Tuple.first sample) ]
 
 
-viewSelectedSample : Sample -> H.Html Sample
-viewSelectedSample ( name, tree ) =
-    column [ HA.style "flex" "1" ]
-        (H.h3 [] [ H.text name ]
-            :: (T.evalSteps tree
-                    |> List.map
-                        (\step ->
-                            H.pre [] (TF.toStrings step |> List.map (\line -> H.div [] [ H.text line ]))
-                        )
-               )
-        )
+viewSelectedSample : Model -> H.Html Msg
+viewSelectedSample model =
+    case model.sample of
+        ( name, tree ) ->
+            column [ HA.style "flex" "1" ]
+                (H.h3 [] [ H.text name ]
+                    :: (stepsToShow model.expanded tree
+                            |> List.indexedMap
+                                (\idx step ->
+                                    H.pre
+                                        (attributesForStep idx)
+                                        (TF.toStrings step |> List.map (\line -> H.div [] [ H.text line ]))
+                                )
+                       )
+                )
+
+
+stepsToShow : Bool -> T.Tree -> List T.Tree
+stepsToShow expanded tree =
+    if expanded then
+        T.evalSteps tree
+
+    else
+        List.filterMap identity [ Just tree, T.eval tree ]
+
+
+attributesForStep : Int -> List (H.Attribute Msg)
+attributesForStep idx =
+    if idx > 0 then
+        [ HE.onClick ToggleExpanded ]
+
+    else
+        []
 
 
 column : List (H.Attribute m) -> List (H.Html m) -> H.Html m
@@ -136,6 +171,11 @@ column attributes children =
         children
 
 
-update : Sample -> Sample -> Sample
-update selectedSample _ =
-    selectedSample
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        SetSample sample ->
+            { model | sample = sample }
+
+        ToggleExpanded ->
+            { model | expanded = not model.expanded }
