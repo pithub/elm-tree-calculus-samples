@@ -63,6 +63,18 @@ samples =
         , ( "second{pair x y}", V.fSecond (V.cPair [ T.var "x" [], T.var "y" [] ]) [] )
         ]
       )
+    , ( "3.7 Natural Numbers"
+      , [ ( "zero", V.vZero )
+        , ( "successor", V.cSuccessor [] )
+        , ( "num 5", V.fNum 5 [] )
+        , ( "isZero", V.cIsZero [] )
+        , ( "isZero zero", V.cIsZero [ V.vZero ] )
+        , ( "isZero (successor n)", V.cIsZero [ V.cSuccessor [ T.var "n" [] ] ] )
+        , ( "predecessor", V.cPredecessor [] )
+        , ( "predecessor zero", V.cPredecessor [ V.vZero ] )
+        , ( "predecessor (successor n)", V.cPredecessor [ V.cSuccessor [ T.var "n" [] ] ] )
+        ]
+      )
     ]
 
 

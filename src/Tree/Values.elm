@@ -101,3 +101,32 @@ fFirst pair children =
 fSecond : T.Tree -> List T.Tree -> T.Tree
 fSecond pair children =
     T.delta (pair :: T.delta [] :: cK [ cI [] ] :: children)
+
+
+
+-- 3.7 Natural Numbers
+
+
+vZero : T.Tree
+vZero =
+    T.delta []
+
+
+cSuccessor : List T.Tree -> T.Tree
+cSuccessor children =
+    cK children
+
+
+fNum : Int -> List T.Tree -> T.Tree
+fNum n children =
+    fPower vZero n (cSuccessor []) children
+
+
+cIsZero : List T.Tree -> T.Tree
+cIsZero children =
+    fD (fPower (cI []) 4 (cK []) []) (fD (cK [ cK [] ]) [ T.delta [] ] :: children)
+
+
+cPredecessor : List T.Tree -> T.Tree
+cPredecessor children =
+    fD (fPower (cI []) 2 (cK []) []) (fD (cK [ T.delta [] ]) [ T.delta [] ] :: children)
