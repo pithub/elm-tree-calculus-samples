@@ -162,3 +162,37 @@ cIsStem children =
 cIsFork : List T.Tree -> T.Tree
 cIsFork children =
     fQuery (cFalse []) (cFalse []) (cTrue []) children
+
+
+
+-- 4.4 Waiting
+
+
+fWait : T.Tree -> T.Tree -> List T.Tree -> T.Tree
+fWait x y children =
+    fD (cI []) (fD (cK [ y ]) [ cK [ x ] ] :: children)
+
+
+fWait1 : T.Tree -> List T.Tree -> T.Tree
+fWait1 x children =
+    T.lambda "y" (fWait x (T.var "y" []) []) children
+
+
+fWait2 : T.Tree -> T.Tree -> List T.Tree -> T.Tree
+fWait2 x y children =
+    T.lambda "z" (T.bind "w" (x |> T.add [ y, T.var "z" [], T.var "w" [] ]) []) children
+
+
+fWait21 : T.Tree -> List T.Tree -> T.Tree
+fWait21 x children =
+    T.lambda "y" (fWait2 x (T.var "y" []) []) children
+
+
+fWait3 : T.Tree -> T.Tree -> List T.Tree -> T.Tree
+fWait3 x y children =
+    T.lambda "z" (T.lambda "t" (T.bind "w" (x |> T.add [ y, T.var "z" [], T.var "t" [], T.var "w" [] ]) []) []) children
+
+
+fWait31 : T.Tree -> List T.Tree -> T.Tree
+fWait31 x children =
+    T.lambda "y" (fWait3 x (T.var "y" []) []) children

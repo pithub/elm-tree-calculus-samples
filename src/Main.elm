@@ -105,6 +105,25 @@ samples =
         , ( "(λ*p.second{p})(pair x y)", T.lambda "p" (V.fSecond (T.var "p" []) []) [ V.cPair [ T.var "x" [], T.var "y" [] ] ] )
         ]
       )
+    , ( "4.4 Waiting"
+      , [ ( "λ*x.λ*y.λ*z.xyz", T.lambda "x" (T.lambda "y" (T.lambda "z" (T.var "x" [ T.var "y" [], T.var "z" [] ]) []) []) [] )
+        , ( "λ*x.λ*y.[z]xyz", T.lambda "x" (T.lambda "y" (T.bind "z" (T.var "x" [ T.var "y" [], T.var "z" [] ]) []) []) [] )
+        , ( "(λ*x.λ*y.λ*z.xyz)mn", T.lambda "x" (T.lambda "y" (T.lambda "z" (T.var "x" [ T.var "y" [], T.var "z" [] ]) []) []) [ T.var "m" [], T.var "n" [] ] )
+        , ( "(λ*x.λ*y.[z]xyz)mn", T.lambda "x" (T.lambda "y" (T.bind "z" (T.var "x" [ T.var "y" [], T.var "z" [] ]) []) []) [ T.var "m" [], T.var "n" [] ] )
+        , ( "wait{x,y}", V.fWait (T.var "x" []) (T.var "y" []) [] )
+        , ( "wait{x,y}a", V.fWait (T.var "x" []) (T.var "y" []) [ T.var "a" [] ] )
+        , ( "wait1{x}", V.fWait1 (T.var "x" []) [] )
+        , ( "wait1{x}y", V.fWait1 (T.var "x" []) [ T.var "y" [] ] )
+        , ( "wait1{x}ya", V.fWait1 (T.var "x" []) [ T.var "y" [], T.var "a" [] ] )
+        , ( "wait2{x,y}", V.fWait2 (T.var "x" []) (T.var "y" []) [] )
+        , ( "wait21{x}", V.fWait21 (T.var "x" []) [] )
+        , ( "wait3{x,y}", V.fWait3 (T.var "x" []) (T.var "y" []) [] )
+        , ( "wait31{x}", V.fWait31 (T.var "x" []) [] )
+        , ( "wait3{x,y}a", V.fWait3 (T.var "x" []) (T.var "y" []) [ T.var "a" [] ] )
+        , ( "wait3{x,y}ab", V.fWait3 (T.var "x" []) (T.var "y" []) [ T.var "a" [], T.var "b" [] ] )
+        , ( "wait3{x,y}abc", V.fWait3 (T.var "x" []) (T.var "y" []) [ T.var "a" [], T.var "b" [], T.var "c" [] ] )
+        ]
+      )
     ]
 
 
