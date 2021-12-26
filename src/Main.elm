@@ -124,6 +124,17 @@ samples =
         , ( "wait3{x,y}abc", V.fWait3 (T.var "x" []) (T.var "y" []) [ T.var "a" [], T.var "b" [], T.var "c" [] ] )
         ]
       )
+    , ( "4.5 Fixpoint Functions"
+      , [ ( "selfApply", V.cSelfApply [] )
+        , ( "selfApply w", V.cSelfApply [ T.var "w" [] ] )
+        , ( "Z{f}", V.fZ (T.var "f" []) [] )
+        , ( "Z{f}x", V.fZ (T.var "f" []) [ T.var "x" [] ] )
+        , ( "fSwap{f}xy", V.fSwap (T.var "f" []) [ T.var "x" [], T.var "y" [] ] )
+        , ( "Y2{f}", V.fY2 (T.var "f" []) [] )
+        , ( "Y2{f}x", V.fY2 (T.var "f" []) [ T.var "x" [] ] )
+        , ( "(λ*f.Y2{f})f", T.lambda "f" (V.fY2 (T.var "f" []) []) [ T.var "f" [] ] )
+        ]
+      )
     ]
 
 

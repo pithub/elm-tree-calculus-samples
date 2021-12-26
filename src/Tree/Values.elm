@@ -196,3 +196,27 @@ fWait3 x y children =
 fWait31 : T.Tree -> List T.Tree -> T.Tree
 fWait31 x children =
     T.lambda "y" (fWait3 x (T.var "y" []) []) children
+
+
+
+-- 4.5 Fixpoint Functions
+
+
+cSelfApply : List T.Tree -> T.Tree
+cSelfApply children =
+    fD (cI []) (cI [] :: children)
+
+
+fZ : T.Tree -> List T.Tree -> T.Tree
+fZ f children =
+    fWait (cSelfApply []) (fD (fWait1 (cSelfApply []) []) [ cK [ f ] ]) children
+
+
+fSwap : T.Tree -> List T.Tree -> T.Tree
+fSwap f children =
+    T.lambda "x" (T.lambda "y" (f |> T.add [ T.var "y" [], T.var "x" [] ]) []) children
+
+
+fY2 : T.Tree -> List T.Tree -> T.Tree
+fY2 f children =
+    fZ (fSwap f []) children
