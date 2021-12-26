@@ -96,6 +96,13 @@ samples =
         , ( "([x]Kxx)u", T.bind "x" (V.cK [ T.var "x" [], T.var "x" [] ]) [ T.var "u" [] ] )
         , ( "[x]I", T.bind "x" (V.cI []) [] )
         , ( "([x]I)u", T.bind "x" (V.cI []) [ T.var "u" [] ] )
+        , ( "λ*x.Kxx", T.lambda "λx" (V.cK [ T.var "x" [], T.var "x" [] ]) [] )
+        , ( "(λ*x.Kxx)u", T.lambda "x" (V.cK [ T.var "x" [], T.var "x" [] ]) [ T.var "u" [] ] )
+        , ( "λ*x.I", T.lambda "x" (V.cI []) [] )
+        , ( "(λ*x.I)u", T.lambda "x" (V.cI []) [ T.var "u" [] ] )
+        , ( "(λ*x.d{x})u", T.lambda "x" (V.fD (T.var "x" []) []) [ T.var "u" [] ] )
+        , ( "(λ*p.first{p})(pair x y)", T.lambda "p" (V.fFirst (T.var "p" []) []) [ V.cPair [ T.var "x" [], T.var "y" [] ] ] )
+        , ( "(λ*p.second{p})(pair x y)", T.lambda "p" (V.fSecond (T.var "p" []) []) [ V.cPair [ T.var "x" [], T.var "y" [] ] ] )
         ]
       )
     ]

@@ -88,4 +88,80 @@ suite =
                 (T.var "u" [])
                 (V.cK [ T.var "x" [], T.var "x" [] ])
             ]
+        , -- lambda
+          let
+            test : String -> T.Tree -> T.Tree -> E.Test
+            test description expected tree =
+                E.test description <| \_ -> T.lambda "x" tree [] |> E.equal expected
+          in
+          E.describe "lambda"
+            [ test "ƛ*x.abc"
+                (V.cK [ T.var "a" [ T.var "b" [], T.var "c" [] ] ])
+                (T.var "a" [ T.var "b" [], T.var "c" [] ])
+            , test "ƛ*x.a(bc)"
+                (V.cK [ T.var "a" [ T.var "b" [ T.var "c" [] ] ] ])
+                (T.var "a" [ T.var "b" [ T.var "c" [] ] ])
+            , test "ƛ*x.abx"
+                (T.var "a" [ T.var "b" [] ])
+                (T.var "a" [ T.var "b" [], T.var "x" [] ])
+            , test "ƛ*x.a(bx)"
+                (V.fD (T.var "b" []) [ V.cK [ T.var "a" [] ] ])
+                (T.var "a" [ T.var "b" [ T.var "x" [] ] ])
+            , test "ƛ*x.x"
+                (V.cI [])
+                (T.var "x" [])
+            , test "ƛ*x.xb"
+                (V.fD (V.cK [ T.var "b" [] ]) [ V.cI [] ])
+                (T.var "x" [ T.var "b" [] ])
+            , test "ƛ*x.a(xc)"
+                (V.fD (V.fD (V.cK [ T.var "c" [] ]) [ V.cI [] ]) [ V.cK [ T.var "a" [] ] ])
+                (T.var "a" [ T.var "x" [ T.var "c" [] ] ])
+            , test "ƛ*x.xx"
+                (V.fD (V.cI []) [ V.cI [] ])
+                (T.var "x" [ T.var "x" [] ])
+            , test "ƛ*x.d{x}"
+                (T.delta [ T.delta [ T.delta [] ], T.delta [ T.delta [], T.delta [] ] ])
+                (V.fD (T.var "x" []) [])
+            ]
+        , -- lambda and apply
+          let
+            test : String -> T.Tree -> T.Tree -> E.Test
+            test description expected tree =
+                E.test description <| \_ -> T.evaled (T.lambda "x" tree [ T.var "u" [] ]) |> E.equal expected
+          in
+          E.describe "lambda and apply"
+            [ test "(ƛ*x.abc)u"
+                (T.var "a" [ T.var "b" [], T.var "c" [] ])
+                (T.var "a" [ T.var "b" [], T.var "c" [] ])
+            , test "(ƛ*x.a(bc))u"
+                (T.var "a" [ T.var "b" [ T.var "c" [] ] ])
+                (T.var "a" [ T.var "b" [ T.var "c" [] ] ])
+            , test "(ƛ*x.abx)u"
+                (T.var "a" [ T.var "b" [], T.var "u" [] ])
+                (T.var "a" [ T.var "b" [], T.var "x" [] ])
+            , test "(ƛ*x.a(bx))u"
+                (T.var "a" [ T.var "b" [ T.var "u" [] ] ])
+                (T.var "a" [ T.var "b" [ T.var "x" [] ] ])
+            , test "(ƛ*x.x)u"
+                (T.var "u" [])
+                (T.var "x" [])
+            , test "(ƛ*x.xb)u"
+                (T.var "u" [ T.var "b" [] ])
+                (T.var "x" [ T.var "b" [] ])
+            , test "(ƛ*x.a(xc))u"
+                (T.var "a" [ T.var "u" [ T.var "c" [] ] ])
+                (T.var "a" [ T.var "x" [ T.var "c" [] ] ])
+            , test "(ƛ*x.xx)u"
+                (T.var "u" [ T.var "u" [] ])
+                (T.var "x" [ T.var "x" [] ])
+            , test "(ƛ*x.K)u"
+                (V.cK [])
+                (V.cK [])
+            , test "(ƛ*x.Kx)u"
+                (V.cK [ T.var "u" [] ])
+                (V.cK [ T.var "x" [] ])
+            , test "(ƛ*x.Kxx)u"
+                (T.var "u" [])
+                (V.cK [ T.var "x" [], T.var "x" [] ])
+            ]
         ]

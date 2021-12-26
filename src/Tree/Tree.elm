@@ -1,4 +1,4 @@
-module Tree.Tree exposing (Node(..), Tree(..), add, bind, delta, eval, evalRule, evalStep, evalSteps, evaled, var)
+module Tree.Tree exposing (Node(..), Tree(..), add, bind, delta, eval, evalRule, evalStep, evalSteps, evaled, lambda, var)
 
 import Tree.Util as Util
 
@@ -112,3 +112,43 @@ bind label ((Tree tNode tChildren) as tree) children =
 
                     else
                         delta (delta [] :: tree :: children)
+
+
+lambda : String -> Tree -> List Tree -> Tree
+lambda label ((Tree tNode tChildren) as tree) children =
+    case List.reverse tChildren of
+        ((Tree hNode hChildren) as head) :: tail ->
+            if
+                (not (List.isEmpty hChildren) && contains label head)
+                    || nodeContains label tNode
+                    || List.any (contains label) tail
+            then
+                delta (delta [ lambda label head [] ] :: lambda label (Tree tNode (List.reverse tail)) [] :: children)
+
+            else if nodeContains label hNode then
+                Tree tNode (List.append (List.reverse tail) children)
+
+            else
+                delta (delta [] :: tree :: children)
+
+        [] ->
+            if nodeContains label tNode then
+                delta (delta [ delta [] ] :: delta [ delta [] ] :: children)
+
+            else
+                delta (delta [] :: tree :: children)
+
+
+contains : String -> Tree -> Bool
+contains label (Tree node children) =
+    nodeContains label node || List.any (contains label) children
+
+
+nodeContains : String -> Node -> Bool
+nodeContains label node =
+    case node of
+        Delta ->
+            False
+
+        Var vLabel ->
+            vLabel == label
