@@ -135,6 +135,22 @@ samples =
         , ( "(λ*f.Y2{f})f", T.lambda "f" (V.fY2 (T.var "f" []) []) [ T.var "f" [] ] )
         ]
       )
+    , ( "4.6 Arithmetic"
+      , [ ( "plus", V.cPlus [] )
+        , ( "plus 2", V.cPlus [ V.fNum 2 [] ] )
+        , ( "plus 2 3", V.cPlus [ V.fNum 2 [], V.fNum 3 [] ] )
+        , ( "plus 4", V.cPlus [ V.fNum 4 [] ] )
+        , ( "plus 4 1", V.cPlus [ V.fNum 4 [], V.fNum 1 [] ] )
+        , ( "sub", V.cSub [] )
+        , ( "sub 2", V.cSub [ V.fNum 2 [] ] )
+        , ( "sub 2 5", V.cSub [ V.fNum 2 [], V.fNum 5 [] ] )
+        , ( "mul", V.cMul [] )
+        , ( "mul 0", V.cMul [ V.fNum 0 [] ] )
+        , ( "mul 0 3", V.cMul [ V.fNum 0 [], V.fNum 3 [] ] )
+        , ( "mul 2", V.cMul [ V.fNum 2 [] ] )
+        , ( "mul 2 3", V.cMul [ V.fNum 2 [], V.fNum 3 [] ] )
+        ]
+      )
     ]
 
 

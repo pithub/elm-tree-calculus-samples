@@ -220,3 +220,61 @@ fSwap f children =
 fY2 : T.Tree -> List T.Tree -> T.Tree
 fY2 f children =
     fZ (fSwap f []) children
+
+
+
+-- 4.6 Arithmetic
+
+
+cPlus : List T.Tree -> T.Tree
+cPlus children =
+    fY2
+        (T.lambda "m"
+            (T.lambda "r"
+                (T.delta
+                    [ T.var "m" []
+                    , cI []
+                    , cK [ T.lambda "x" (T.lambda "n" (T.var "r" [ T.var "x" [], cSuccessor [ T.var "n" [] ] ]) []) [] ]
+                    ]
+                )
+                []
+            )
+            []
+        )
+        children
+
+
+cSub : List T.Tree -> T.Tree
+cSub children =
+    fY2
+        (T.lambda "m"
+            (T.lambda "r"
+                (T.delta
+                    [ T.var "m" []
+                    , cI []
+                    , cK [ T.lambda "x" (T.lambda "n" (T.var "r" [ T.var "x" [], cPredecessor [ T.var "n" [] ] ]) []) [] ]
+                    ]
+                )
+                []
+            )
+            []
+        )
+        children
+
+
+cMul : List T.Tree -> T.Tree
+cMul children =
+    fY2
+        (T.lambda "m"
+            (T.lambda "r"
+                (T.delta
+                    [ T.var "m" []
+                    , cK [ vZero ]
+                    , cK [ T.lambda "x" (fD (T.var "r" [ T.var "x" [] ]) [ cPlus [] ]) [] ]
+                    ]
+                )
+                []
+            )
+            []
+        )
+        children
