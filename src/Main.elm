@@ -151,6 +151,10 @@ samples =
         , ( "mul 2 3", V.cMul [ V.fNum 2 [], V.fNum 3 [] ] )
         ]
       )
+    , ( "4.7 Lists and Strings"
+      , [ ( "a::b::c::nil", V.cCons [ T.var "a" [], V.cCons [ T.var "b" [], V.cCons [ T.var "c" [], V.vNil ] ] ] )
+        ]
+      )
     ]
 
 

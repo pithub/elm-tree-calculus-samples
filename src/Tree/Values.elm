@@ -278,3 +278,17 @@ cMul children =
             []
         )
         children
+
+
+
+-- 4.7 Lists and Strings
+
+
+vNil : T.Tree
+vNil =
+    T.delta []
+
+
+cCons : List T.Tree -> T.Tree
+cCons children =
+    T.delta children
