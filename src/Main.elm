@@ -155,6 +155,18 @@ samples =
       , [ ( "a::b::c::nil", V.cCons [ T.var "a" [], V.cCons [ T.var "b" [], V.cCons [ T.var "c" [], V.vNil ] ] ] )
         ]
       )
+    , ( "4.8 Mapping and Folding"
+      , [ ( "listMap", V.fSwap (T.var "Y2" [ V.cListMapSwap [] ]) [] )
+        , ( "listMap f nil", V.cListMap [ T.var "f" [], V.vNil ] )
+        , ( "listMap f a::b::c::nil", V.cListMap [ T.var "f" [], V.cCons [ T.var "a" [], V.cCons [ T.var "b" [], V.cCons [ T.var "c" [], V.vNil ] ] ] ] )
+        , ( "liftFoldLeft", T.lambda "f" (T.lambda "x" (T.lambda "y" (T.var "Y2" [ V.cListFoldLeftAux [], T.var "y" [], T.var "f" [], T.var "x" [] ]) []) []) [] )
+        , ( "liftFoldLeft f x nil", V.cListFoldLeft [ T.var "f" [], T.var "x" [], V.vNil ] )
+        , ( "liftFoldLeft f x a::b::c::nil", V.cListFoldLeft [ T.var "f" [], T.var "x" [], V.cCons [ T.var "a" [], V.cCons [ T.var "b" [], V.cCons [ T.var "c" [], V.vNil ] ] ] ] )
+        , ( "liftFoldRight", T.lambda "f" (T.lambda "x" (T.lambda "y" (T.var "Y2" [ V.cListFoldRightAux [], T.var "y" [], T.var "f" [], T.var "x" [] ]) []) []) [] )
+        , ( "liftFoldRight f x nil", V.cListFoldRight [ T.var "f" [], T.var "x" [], V.vNil ] )
+        , ( "liftFoldRight f x a::b::c::nil", V.cListFoldRight [ T.var "f" [], T.var "x" [], V.cCons [ T.var "a" [], V.cCons [ T.var "b" [], V.cCons [ T.var "c" [], V.vNil ] ] ] ] )
+        ]
+      )
     ]
 
 

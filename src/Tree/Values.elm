@@ -292,3 +292,117 @@ vNil =
 cCons : List T.Tree -> T.Tree
 cCons children =
     T.delta children
+
+
+
+-- 4.8 Mapping and Folding
+
+
+cListMapSwap : List T.Tree -> T.Tree
+cListMapSwap children =
+    T.lambda "x"
+        (T.delta
+            [ T.var "x" []
+            , cK [ cK [ vNil ] ]
+            , T.lambda "h"
+                (T.lambda "t"
+                    (T.lambda "m"
+                        (T.lambda "f"
+                            (cCons
+                                [ T.var "f" [ T.var "h" [] ]
+                                , T.var "m" [ T.var "t" [], T.var "f" [] ]
+                                ]
+                            )
+                            []
+                        )
+                        []
+                    )
+                    []
+                )
+                []
+            ]
+        )
+        children
+
+
+cListMap : List T.Tree -> T.Tree
+cListMap children =
+    fSwap (fY2 (cListMapSwap []) []) children
+
+
+cListFoldLeftAux : List T.Tree -> T.Tree
+cListFoldLeftAux children =
+    T.lambda "y"
+        (T.delta
+            [ T.var "y" []
+            , cK [ cK [ cI [] ] ]
+            , T.lambda "h"
+                (T.lambda "t"
+                    (T.lambda "r"
+                        (T.lambda "f"
+                            (T.lambda "x"
+                                (T.var "r" [ T.var "t" [], T.var "f" [], T.var "f" [ T.var "x" [], T.var "h" [] ] ])
+                                []
+                            )
+                            []
+                        )
+                        []
+                    )
+                    []
+                )
+                []
+            ]
+        )
+        children
+
+
+cListFoldLeft : List T.Tree -> T.Tree
+cListFoldLeft children =
+    T.lambda "f"
+        (T.lambda "x"
+            (T.lambda "y"
+                (fY2 (cListFoldLeftAux []) [ T.var "y" [], T.var "f" [], T.var "x" [] ])
+                []
+            )
+            []
+        )
+        children
+
+
+cListFoldRightAux : List T.Tree -> T.Tree
+cListFoldRightAux children =
+    T.lambda "y"
+        (T.delta
+            [ T.var "y" []
+            , cK [ cK [ cI [] ] ]
+            , T.lambda "h"
+                (T.lambda "t"
+                    (T.lambda "r"
+                        (T.lambda "f"
+                            (T.lambda "x"
+                                (T.var "f" [ T.var "h" [], T.var "r" [ T.var "t" [], T.var "f" [], T.var "x" [] ] ])
+                                []
+                            )
+                            []
+                        )
+                        []
+                    )
+                    []
+                )
+                []
+            ]
+        )
+        children
+
+
+cListFoldRight : List T.Tree -> T.Tree
+cListFoldRight children =
+    T.lambda "f"
+        (T.lambda "x"
+            (T.lambda "y"
+                (fY2 (cListFoldRightAux []) [ T.var "y" [], T.var "f" [], T.var "x" [] ])
+                []
+            )
+            []
+        )
+        children
