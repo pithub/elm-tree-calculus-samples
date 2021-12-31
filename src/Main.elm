@@ -167,6 +167,14 @@ samples =
         , ( "liftFoldRight f x a::b::c::nil", V.cListFoldRight [ T.var "f" [], T.var "x" [], V.cCons [ T.var "a" [], V.cCons [ T.var "b" [], V.cCons [ T.var "c" [], V.vNil ] ] ] ] )
         ]
       )
+    , ( "5.2 Size"
+      , [ ( "size", T.var "Y2" [ T.lambda "x" (T.var "isStem" [ T.var "x" [], T.lambda "s" (T.delta [ T.var "x" [ T.delta [] ], T.delta [], T.lambda "x1" (V.cK [ V.cSuccessor [ T.var "s" [ T.var "x1" [] ] ] ]) [] ]) [], T.delta [ T.var "x" [], V.cK [ V.cSuccessor [ V.vZero ] ], T.lambda "x1" (T.lambda "x2" (T.lambda "s" (V.cSuccessor [ T.var "plus" [ T.var "s" [ T.var "x1" [] ], T.var "s" [ T.var "x2" [] ] ] ]) []) []) [] ] ]) [] ] )
+        , ( "size K", V.cSize [ V.cK [] ] )
+        , ( "size I", V.cSize [ V.cI [] ] )
+        , ( "size D", V.cSize [ V.cD [] ] )
+        , ( "size isLeaf", V.cSize [ V.cIsLeaf [] ] )
+        ]
+      )
     ]
 
 

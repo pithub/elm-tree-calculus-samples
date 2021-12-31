@@ -406,3 +406,33 @@ cListFoldRight children =
             []
         )
         children
+
+
+
+-- 5.2 Size
+
+
+cSize : List T.Tree -> T.Tree
+cSize children =
+    fY2
+        (T.lambda "x"
+            (cIsStem
+                [ T.var "x" []
+                , T.lambda "s"
+                    (T.delta
+                        [ T.var "x" [ T.delta [] ]
+                        , T.delta []
+                        , T.lambda "x1" (cK [ cSuccessor [ T.var "s" [ T.var "x1" [] ] ] ]) []
+                        ]
+                    )
+                    []
+                , T.delta
+                    [ T.var "x" []
+                    , cK [ cSuccessor [ vZero ] ]
+                    , T.lambda "x1" (T.lambda "x2" (T.lambda "s" (cSuccessor [ cPlus [ T.var "s" [ T.var "x1" [] ], T.var "s" [ T.var "x2" [] ] ] ]) []) []) []
+                    ]
+                ]
+            )
+            []
+        )
+        children
