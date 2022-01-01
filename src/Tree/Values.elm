@@ -508,3 +508,32 @@ cEqual children =
             []
         )
         children
+
+
+
+-- 5.4 Tagging
+
+
+fTag : T.Tree -> T.Tree -> List T.Tree -> T.Tree
+fTag t f children =
+    fD t (fD f [ cK [ cK [] ] ] :: children)
+
+
+cGetTag : List T.Tree -> T.Tree
+cGetTag children =
+    T.lambda "p" (fFirst (fFirst (T.var "p" []) [ T.delta [] ]) []) children
+
+
+cUnTag : List T.Tree -> T.Tree
+cUnTag children =
+    T.lambda "x" (fFirst (fFirst (fSecond (T.var "x" []) []) [ T.delta [] ]) []) children
+
+
+fTagWait : T.Tree -> List T.Tree -> T.Tree
+fTagWait t children =
+    T.lambda "w" (fTag t (fWait (cSelfApply []) (T.var "w" []) []) []) children
+
+
+fY2t : T.Tree -> T.Tree -> List T.Tree -> T.Tree
+fY2t t f children =
+    fTag t (fWait (cSelfApply []) (fD (fTagWait t []) [ cK [ fSwap f [] ] ]) []) children

@@ -195,6 +195,17 @@ samples =
         , ( "equal I I", V.cEqual [ V.cI [], V.cI [] ] )
         ]
       )
+    , ( "5.4 Tagging"
+      , [ ( "tag t f", V.fTag (T.var "t" []) (T.var "f" []) [] )
+        , ( "getTag", V.cGetTag [] )
+        , ( "unTag", V.cUnTag [] )
+        , ( "tag{\"true\",true} x y", V.fTag (T.var "true" []) (V.cTrue []) [ T.var "x" [], T.var "y" [] ] )
+        , ( "getTag tag{\"true\",true}", V.cGetTag [ V.fTag (T.var "true" []) (V.cTrue []) [] ] )
+        , ( "unTag tag{\"true\",true}", V.cUnTag [ V.fTag (T.var "true" []) (V.cTrue []) [] ] )
+        , ( "Y2t{t,f}x", V.fY2t (T.var "t" []) (T.var "f" []) [ T.var "x" [] ] )
+        , ( "getTag Y2t{t,f}", V.cGetTag [ V.fY2t (T.var "t" []) (T.var "f" []) [] ] )
+        ]
+      )
     ]
 
 
