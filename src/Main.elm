@@ -206,6 +206,19 @@ samples =
         , ( "getTag Y2t{t,f}", V.cGetTag [ V.fY2t (T.var "t" []) (T.var "f" []) [] ] )
         ]
       )
+    , ( "5.5 Simple Types"
+      , [ ( "Nat", V.tNat )
+        , ( "Bool", V.tBool )
+        , ( "Nat -> Bool", V.tFun V.tNat V.tBool )
+        , ( "typeCheck (Nat -> Bool) Nat", V.tTypeCheck [ V.tFun V.tNat V.tBool, V.tNat ] )
+        , ( "typeCheck (Nat -> Bool) Bool", V.tTypeCheck [ V.tFun V.tNat V.tBool, V.tBool ] )
+        , ( "typeCheck (Bool -> (Bool -> Bool)) Bool", V.tTypeCheck [ V.tFun V.tBool (V.tFun V.tBool V.tBool), V.tBool ] )
+        , ( "typeCheck Nat Bool", V.tTypeCheck [ V.tNat, V.tBool ] )
+        , ( "typeCheck Bool Bool", V.tTypeCheck [ V.tBool, V.tBool ] )
+        , ( "isZero (successor zero)", V.tApp [ V.tIsZero [], V.tApp [ V.tSuccessor [], V.tZero [] ] ] )
+        , ( "isZero (true)", V.tApp [ V.tIsZero [], V.tTrue [] ] )
+        ]
+      )
     ]
 
 

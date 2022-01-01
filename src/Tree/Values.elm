@@ -537,3 +537,137 @@ fTagWait t children =
 fY2t : T.Tree -> T.Tree -> List T.Tree -> T.Tree
 fY2t t f children =
     fTag t (fWait (cSelfApply []) (fD (fTagWait t []) [ cK [ fSwap f [] ] ]) []) children
+
+
+
+-- 5.5 Simple Types
+
+
+tBool : T.Tree
+tBool =
+    T.delta [ vZero ]
+
+
+tNat : T.Tree
+tNat =
+    T.delta [ cSuccessor [ vZero ] ]
+
+
+tFun : T.Tree -> T.Tree -> T.Tree
+tFun u t =
+    T.delta [ u, t ]
+
+
+tTyped : T.Tree -> T.Tree -> List T.Tree -> T.Tree
+tTyped typ tree children =
+    fTag typ tree children
+
+
+tTrue : List T.Tree -> T.Tree
+tTrue children =
+    tTyped tBool (cTrue []) children
+
+
+tFalse : List T.Tree -> T.Tree
+tFalse children =
+    tTyped tBool (cFalse []) children
+
+
+tAnd : List T.Tree -> T.Tree
+tAnd children =
+    tTyped (tFun tBool (tFun tBool tBool)) (cAnd []) children
+
+
+tOr : List T.Tree -> T.Tree
+tOr children =
+    tTyped (tFun tBool (tFun tBool tBool)) (cOr []) children
+
+
+tImplies : List T.Tree -> T.Tree
+tImplies children =
+    tTyped (tFun tBool (tFun tBool tBool)) (cImplies []) children
+
+
+tNot : List T.Tree -> T.Tree
+tNot children =
+    tTyped (tFun tBool tBool) (cNot []) children
+
+
+tIff : List T.Tree -> T.Tree
+tIff children =
+    tTyped (tFun tBool (tFun tBool tBool)) (cIff []) children
+
+
+tZero : List T.Tree -> T.Tree
+tZero children =
+    tTyped tNat vZero children
+
+
+tSuccessor : List T.Tree -> T.Tree
+tSuccessor children =
+    tTyped (tFun tNat tNat) (cSuccessor []) children
+
+
+tIsZero : List T.Tree -> T.Tree
+tIsZero children =
+    tTyped (tFun tNat tBool) (cIsZero []) children
+
+
+tPlus : List T.Tree -> T.Tree
+tPlus children =
+    tTyped (tFun tNat (tFun tNat tNat)) (cPlus []) children
+
+
+tError : List T.Tree -> T.Tree
+tError children =
+    T.delta children
+
+
+tTypeCheck : List T.Tree -> T.Tree
+tTypeCheck children =
+    T.lambda "equal"
+        (T.lambda "x"
+            (T.lambda "y"
+                (cIsFork
+                    [ T.var "x" []
+                    , T.delta
+                        [ T.var "x" []
+                        , T.delta []
+                        , T.lambda "u"
+                            (T.lambda "t"
+                                (T.var "equal" [ T.var "u" [], T.var "y" [], T.var "t" [], tError [] ])
+                                []
+                            )
+                            []
+                        ]
+                    , tError []
+                    ]
+                )
+                []
+            )
+            []
+        )
+        (cEqual [] :: children)
+
+
+tApp : List T.Tree -> T.Tree
+tApp children =
+    T.lambda "typeCheck"
+        (T.lambda "getTag"
+            (T.lambda "unTag"
+                (T.lambda "f"
+                    (T.lambda "x"
+                        (fTag
+                            (T.var "typeCheck" [ T.var "getTag" [ T.var "f" [] ], T.var "getTag" [ T.var "x" [] ] ])
+                            (T.var "unTag" [ T.var "f" [], T.var "unTag" [ T.var "x" [] ] ])
+                            []
+                        )
+                        []
+                    )
+                    []
+                )
+                []
+            )
+            []
+        )
+        (tTypeCheck [] :: cGetTag [] :: cUnTag [] :: children)
