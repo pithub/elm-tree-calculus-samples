@@ -436,3 +436,75 @@ cSize children =
             []
         )
         children
+
+
+
+-- 5.3 Equality
+
+
+cEqual : List T.Tree -> T.Tree
+cEqual children =
+    fY2
+        (T.lambda "x"
+            (cIsStem
+                [ T.var "x" []
+                , T.lambda "e"
+                    (T.lambda "y"
+                        (cIsStem
+                            [ T.var "y" []
+                            , T.var "e"
+                                [ T.var "x" [ T.delta [] ]
+                                , T.var "y" [ T.delta [] ]
+                                ]
+                            , cFalse []
+                            ]
+                        )
+                        []
+                    )
+                    []
+                , T.delta
+                    [ T.var "x" []
+                    , T.lambda "e"
+                        (T.lambda "y"
+                            (cIsLeaf [ T.var "y" [] ])
+                            []
+                        )
+                        []
+                    , T.lambda "x1"
+                        (T.lambda "x2"
+                            (T.lambda "e"
+                                (T.lambda "y"
+                                    (cIsFork
+                                        [ T.var "y" []
+                                        , T.delta
+                                            [ T.var "y" []
+                                            , T.delta []
+                                            , T.lambda "y1"
+                                                (T.lambda "y2"
+                                                    (T.var "e"
+                                                        [ T.var "x1" []
+                                                        , T.var "y1" []
+                                                        , T.var "e" [ T.var "x2" [], T.var "y2" [] ]
+                                                        , cFalse []
+                                                        ]
+                                                    )
+                                                    []
+                                                )
+                                                []
+                                            ]
+                                        , cFalse []
+                                        ]
+                                    )
+                                    []
+                                )
+                                []
+                            )
+                            []
+                        )
+                        []
+                    ]
+                ]
+            )
+            []
+        )
+        children

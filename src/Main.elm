@@ -175,6 +175,26 @@ samples =
         , ( "size isLeaf", V.cSize [ V.cIsLeaf [] ] )
         ]
       )
+    , ( "5.3 Equality"
+      , [ ( "equal", T.var "Y2" [ T.lambda "x" (T.var "isStem" [ T.var "x" [], T.lambda "e" (T.lambda "y" (T.var "isStem" [ T.var "y" [], T.var "e" [ T.var "x" [ T.delta [] ], T.var "y" [ T.delta [] ] ], V.cFalse [] ]) []) [], T.delta [ T.var "x" [], T.lambda "e" (T.lambda "y" (T.var "isLeaf" [ T.var "y" [] ]) []) [], T.lambda "x1" (T.lambda "x2" (T.lambda "e" (T.lambda "y" (T.var "isFork" [ T.var "y" [], T.delta [ T.var "y" [], T.delta [], T.lambda "y1" (T.lambda "y2" (T.var "e" [ T.var "x1" [], T.var "y1" [], T.var "e" [ T.var "x2" [], T.var "y2" [] ], V.cFalse [] ]) []) [] ], V.cFalse [] ]) []) []) []) [] ] ]) [] ] )
+        , ( "equal Δ Δ", V.cEqual [ T.delta [], T.delta [] ] )
+        , ( "equal Δ K", V.cEqual [ T.delta [], V.cK [] ] )
+        , ( "equal Δ 1", V.cEqual [ T.delta [], V.cSuccessor [ V.vZero ] ] )
+        , ( "equal Δ I", V.cEqual [ T.delta [], V.cI [] ] )
+        , ( "equal K Δ", V.cEqual [ V.cK [], T.delta [] ] )
+        , ( "equal K K", V.cEqual [ V.cK [], V.cK [] ] )
+        , ( "equal K 1", V.cEqual [ V.cK [], V.cSuccessor [ V.vZero ] ] )
+        , ( "equal K I", V.cEqual [ V.cK [], V.cI [] ] )
+        , ( "equal 1 Δ", V.cEqual [ V.cSuccessor [ V.vZero ], T.delta [] ] )
+        , ( "equal 1 K", V.cEqual [ V.cSuccessor [ V.vZero ], V.cK [] ] )
+        , ( "equal 1 1", V.cEqual [ V.cSuccessor [ V.vZero ], V.cSuccessor [ V.vZero ] ] )
+        , ( "equal 1 K", V.cEqual [ V.cSuccessor [ V.vZero ], V.cI [] ] )
+        , ( "equal I Δ", V.cEqual [ V.cI [], T.delta [] ] )
+        , ( "equal I K", V.cEqual [ V.cI [], V.cK [] ] )
+        , ( "equal I 1", V.cEqual [ V.cI [], V.cSuccessor [ V.vZero ] ] )
+        , ( "equal I I", V.cEqual [ V.cI [], V.cI [] ] )
+        ]
+      )
     ]
 
 
