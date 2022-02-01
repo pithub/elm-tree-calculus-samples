@@ -55,16 +55,28 @@ suite =
             [ "Δ─┐"
             , "Δ Δ"
             ]
+        , test "Δ bottom Δ" (T.delta [ T.var "bottom" [], T.delta [] ]) <|
+            [ "Δ──────┐"
+            , "bottom Δ"
+            ]
+        , test "Δ left middle right" (T.delta [ T.var "left" [], T.var "middle" [], T.var "right" [] ]) <|
+            [ "Δ────┲━━━━━━┓    "
+            , "left middle right"
+            ]
         , test "xΔΔ" (T.var "x" [ T.delta [], T.delta [] ]) <|
-            [ "x─┬─┐"
+            [ "x─┲━┓"
             , "  Δ Δ"
             ]
+        , test "xΔΔΔ" (T.var "x" [ T.delta [], T.delta [], T.delta [] ]) <|
+            [ "x─┲━┳━┓"
+            , "  Δ Δ Δ"
+            ]
         , test "xyz" (T.var "x" [ T.var "y" [], T.var "z" [] ]) <|
-            [ "x─┬─┐"
+            [ "x─┲━┓"
             , "  y z"
             ]
         , test "top left right" (T.var "top" [ T.var "left" [], T.var "right" [] ]) <|
-            [ "top─┬────┐    "
+            [ "top─┲━━━━┓    "
             , "    left right"
             ]
         , test "Δ(ΔΔ)" (T.delta [ T.delta [ T.delta [] ] ]) <|
@@ -92,8 +104,13 @@ suite =
             , "Δ Δ"
             , "  Δ"
             ]
+        , test "Δ(ΔΔΔΔ)" (T.delta [ T.delta [ T.delta [], T.delta [], T.delta [] ] ]) <|
+            [ "Δ    "
+            , "Δ─┲━┓"
+            , "Δ Δ Δ"
+            ]
         , test "top (left bottom) right" (T.var "top" [ T.var "left" [ T.var "bottom" [] ], T.var "right" [] ]) <|
-            [ "top─┬───────────┐    "
+            [ "top─┲━━━━━━━━━━━┓    "
             , "    left─┐      right"
             , "         bottom      "
             ]

@@ -1,5 +1,9 @@
 module Main exposing (main)
 
+-- Possible performance improvements:
+-- * Don't walk the whole tree in evalStep (see new improved formatting)
+-- * Add native Int node and native plus, sub, and mul functions
+
 import Browser
 import Html as H
 import Html.Attributes as HA
@@ -96,7 +100,7 @@ samples =
         , ( "([x]Kxx)u", T.bind "x" (V.cK [ T.var "x" [], T.var "x" [] ]) [ T.var "u" [] ] )
         , ( "[x]I", T.bind "x" (V.cI []) [] )
         , ( "([x]I)u", T.bind "x" (V.cI []) [ T.var "u" [] ] )
-        , ( "λ*x.Kxx", T.lambda "λx" (V.cK [ T.var "x" [], T.var "x" [] ]) [] )
+        , ( "λ*x.Kxx", T.lambda "x" (V.cK [ T.var "x" [], T.var "x" [] ]) [] )
         , ( "(λ*x.Kxx)u", T.lambda "x" (V.cK [ T.var "x" [], T.var "x" [] ]) [ T.var "u" [] ] )
         , ( "λ*x.I", T.lambda "x" (V.cI []) [] )
         , ( "(λ*x.I)u", T.lambda "x" (V.cI []) [ T.var "u" [] ] )

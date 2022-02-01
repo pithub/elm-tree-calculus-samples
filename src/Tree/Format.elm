@@ -28,18 +28,28 @@ firstLine startOfFirstLine nextLine =
     String.toList nextLine
         |> List.drop (String.length startOfFirstLine)
         |> List.foldl
-            (\char ( inWord, acc ) ->
+            (\char ( ( inWord, isFirst ), acc ) ->
                 if isWordChar char then
                     if inWord then
-                        ( True, "─" :: acc )
+                        if isFirst then
+                            ( ( True, isFirst ), "─" :: acc )
+
+                        else
+                            ( ( True, isFirst ), "━" :: acc )
+
+                    else if isFirst then
+                        ( ( True, False ), "┲" :: acc )
 
                     else
-                        ( True, "┬" :: acc )
+                        ( ( True, isFirst ), "┳" :: acc )
+
+                else if isFirst then
+                    ( ( False, isFirst ), "─" :: acc )
 
                 else
-                    ( False, "─" :: acc )
+                    ( ( False, isFirst ), "━" :: acc )
             )
-            ( True, [] )
+            ( ( True, True ), [] )
         |> Tuple.second
         |> adjustEndOfFirstLine ""
         |> String.append startOfFirstLine
@@ -49,11 +59,14 @@ adjustEndOfFirstLine : String -> List String -> String
 adjustEndOfFirstLine acc rest =
     case rest of
         head :: tail ->
-            if head == "─" then
-                adjustEndOfFirstLine (String.append " " acc) tail
+            if head == "┲" then
+                String.concat [ String.concat (List.reverse tail), "┐", acc ]
+
+            else if head == "┳" then
+                String.concat [ String.concat (List.reverse tail), "┓", acc ]
 
             else
-                String.concat [ String.concat (List.reverse tail), "┐", acc ]
+                adjustEndOfFirstLine (String.append " " acc) tail
 
         [] ->
             acc
@@ -66,7 +79,7 @@ isWordChar char =
         s =
             String.fromChar char
     in
-    not (s == " " || s == "─" || s == "┬" || s == "┐")
+    not (s == " " || Char.toCode char >= Char.toCode '─')
 
 
 toStringsN : List T.Tree -> List String
